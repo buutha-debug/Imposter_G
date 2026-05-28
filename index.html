@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>IMPOSTER_PROTOCOL_MANAGE</title>
+    <title>IMPOSTER_WOLF_PROTOCOL</title>
     <style>
         :root {
             --bg-dark: #0a0a0c;
@@ -13,6 +13,8 @@
             --border-color: #26262b;
             --accent-red: #ff3333;
             --accent-blue: #38bdf8;
+            --accent-orange: #f97316;
+            --accent-green: #22c55e;
             --text-main: #e4e4e7;
             --text-dim: #71717a;
         }
@@ -28,9 +30,9 @@
             color: var(--text-main);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            padding: 20px;
-            padding-top: calc(20px + env(safe-area-inset-top));
-            padding-bottom: calc(20px + env(safe-area-inset-bottom));
+            padding: 15px;
+            padding-top: calc(15px + env(safe-area-inset-top));
+            padding-bottom: calc(15px + env(safe-area-inset-bottom));
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -38,7 +40,6 @@
             height: 100vh;
             height: 100dvh;
             overflow: hidden;
-            position: relative;
         }
 
         .screen {
@@ -57,29 +58,28 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            align-items: center;
             flex-grow: 1;
-            justify-content: flex-start;
             overflow: hidden;
         }
 
         h2 {
-            font-size: 1.3rem;
-            letter-spacing: 2px;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            margin: 0 0 15px 0;
+            margin: 0 0 10px 0;
             color: #fff;
             text-align: center;
             border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
+            padding-bottom: 8px;
             width: 100%;
+            flex-shrink: 0;
         }
 
         .input-group {
             width: 100%;
             display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 8px;
+            margin-bottom: 8px;
             flex-shrink: 0;
         }
 
@@ -88,7 +88,7 @@
             background: var(--panel-bg);
             border: 1px solid var(--border-color);
             color: #fff;
-            padding: 10px;
+            padding: 12px;
             border-radius: 6px;
             font-size: 0.9rem;
         }
@@ -101,12 +101,32 @@
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            flex-shrink: 0;
         }
 
         button:active {
             background: var(--text-main);
             color: var(--bg-dark);
+        }
+
+        .add-word-trigger-btn {
+            width: 100%;
+            background: var(--accent-green);
+            border: 1px solid var(--accent-green);
+            color: #000;
+            padding: 12px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+            text-align: center;
+        }
+
+        .add-word-trigger-btn:active {
+            background: #fff;
+            color: #000;
         }
 
         .primary-btn {
@@ -117,28 +137,28 @@
             padding: 14px;
             font-size: 1rem;
             letter-spacing: 1px;
-            margin-top: 10px;
+            margin-top: 8px;
             flex-shrink: 0;
-        }
-
-        .sec-btn {
-            border-color: var(--text-dim);
-            color: var(--text-dim);
-            background: transparent;
-            font-size: 0.8rem;
-            padding: 5px 10px;
+            border-radius: 6px;
         }
 
         .list-container {
             width: 100%;
-            flex-grow: 1;
-            max-height: 140px;
-            overflow-y: auto;
+            background: rgba(20, 20, 22, 0.5);
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            padding: 8px;
-            background: rgba(20, 20, 22, 0.5);
-            margin-bottom: 10px;
+            padding: 6px;
+            overflow-y: auto;
+            margin-bottom: 8px;
+        }
+        
+        #players-list {
+            height: 70px;
+            flex-shrink: 0;
+        }
+
+        #words-management-list {
+            flex-grow: 1;
         }
 
         .list-item {
@@ -146,26 +166,27 @@
             justify-content: space-between;
             align-items: center;
             padding: 6px 0;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-dim);
-            border-bottom: 1px solid rgba(38, 38, 43, 0.3);
+            border-bottom: 1px solid rgba(38, 38, 43, 0.2);
         }
 
         .word-actions button {
-            padding: 3px 8px;
-            font-size: 0.75rem;
-            margin-left: 4px;
+            padding: 2px 6px;
+            font-size: 0.7rem;
+            margin-left: 2px;
         }
 
         .edit-btn { border-color: var(--accent-blue); color: var(--accent-blue); }
         .del-btn { border-color: var(--accent-red); color: var(--accent-red); }
 
-        /* كرت اللاعب */
+        /* تعديل كرت اللاعب ليكون بالمنتصف تماماً */
         .card-container {
             perspective: 1000px;
             width: 280px;
-            height: 340px;
-            margin: auto 0;
+            height: 320px;
+            margin: auto; /* التمركز التلقائي في وسط المساحة المتاحة عمودياً وأفقياً */
+            display: block;
         }
 
         .card {
@@ -192,23 +213,52 @@
             justify-content: center;
             padding: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            left: 0;
+            top: 0;
         }
 
         .card-front { background: var(--panel-bg); }
         .card-back {
             background: #1c1c1f;
             transform: rotateY(180deg);
-            border-color: var(--accent-red);
+            border-color: var(--accent-orange);
         }
 
-        .player-name { font-size: 1.8rem; font-weight: 900; color: #fff; }
-        .card-instruction { font-size: 0.75rem; color: var(--text-dim); margin-top: 15px; text-align: center; }
+        .player-name { font-size: 1.6rem; font-weight: 900; color: #fff; }
+        .card-instruction { font-size: 0.7rem; color: var(--text-dim); margin-top: 12px; text-align: center; }
         
-        .secret-word { font-size: 2rem; font-weight: 900; color: var(--accent-red); text-align: center; }
-        .hint-text { font-size: 1.1rem; color: #fff; margin-top: 12px; text-align: center; background: #26262b; padding: 8px 15px; border-radius: 6px; width: 80%; }
+        /* الختم */
+        .seal-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .seal-btn {
+            background: var(--accent-orange);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            border-radius: 50px;
+            box-shadow: 0 0 12px rgba(249, 115, 22, 0.3);
+        }
+
+        .secret-content {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .secret-word { font-size: 1.6rem; font-weight: 900; color: var(--accent-red); text-align: center; line-height: 1.3; }
+        .hint-text { font-size: 1rem; color: #fff; margin-top: 10px; text-align: center; background: #26262b; padding: 6px 12px; border-radius: 6px; width: 100%; }
 
         #timer-display {
-            font-size: 4.5rem;
+            font-size: 4rem;
             font-weight: 900;
             font-family: monospace;
             color: #fff;
@@ -218,43 +268,51 @@
 </head>
 <body>
 
+    <!-- الشاشة 1: التجهيز -->
     <div id="setup-screen" class="screen active">
         <h2>إعدادات العملية</h2>
         
         <div class="content-wrapper">
             <div class="input-group">
                 <input type="text" id="player-input" placeholder="اسم اللاعب...">
-                <button onclick="addPlayer()">إضافة</button>
+                <button onclick="addPlayer()">إضافة لاعب</button>
             </div>
             <div class="list-container" id="players-list"></div>
 
-            <div class="input-group" style="margin-top: 5px;">
-                <input type="text" id="word-input" placeholder="الكلمة...">
+            <div class="input-group">
+                <input type="text" id="word-input" placeholder="الكلمة الجديدة...">
                 <input type="text" id="hint-input" placeholder="التلميح...">
-                <button onclick="addOrUpdateWord()" id="add-word-btn">+ إضافة</button>
             </div>
+            <button class="add-word-trigger-btn" onclick="addOrUpdateWord()" id="add-word-btn">+ حفظ الكلمة باللائحة</button>
             
-            <div class="list-container" id="words-management-list">
-                </div>
+            <div class="list-container" id="words-management-list"></div>
         </div>
 
         <button class="primary-btn" onclick="startGame()">بدء الاختراق</button>
     </div>
 
+    <!-- الشاشة 2: توزيع الأدوار -->
     <div id="game-screen" class="screen">
         <h2 id="turn-title">دور اللاعب</h2>
         
-        <div class="content-wrapper" style="justify-content: center;">
-            <div class="card-container" onclick="flipCard()">
+        <!-- تعديل الحاوية هنا لضمان محاذاة عناصر الكرت في المنتصف بالكامل -->
+        <div class="content-wrapper" style="justify-content: center; align-items: center;">
+            <div class="card-container" id="card-trigger">
                 <div class="card" id="main-card">
-                    <div class="card-face card-front">
+                    <div class="card-face card-front" onclick="flipCard()">
                         <div class="player-name" id="card-player-name">اسم اللاعب</div>
-                        <div class="card-instruction">اضغط لرفع الكرت ورؤية السر</div>
+                        <div class="card-instruction">اضغط لقلب الكرت</div>
                     </div>
                     <div class="card-face card-back">
-                        <div class="secret-word" id="card-secret">الكلمة</div>
-                        <div class="hint-text" id="card-hint" style="display: none;">التلميح: ...</div>
-                        <div class="card-instruction">اضغط مجدداً للإغلاق والتمرير</div>
+                        <div id="seal-container" class="seal-screen">
+                            <div style="color: var(--accent-orange); margin-bottom: 12px; font-size: 0.8rem; font-weight: bold;">[ الرسالة مختومة أمنياً ]</div>
+                            <button class="seal-btn" onclick="breakSeal()">كسر الختم وقراءة السر</button>
+                        </div>
+                        <div id="secret-container" class="secret-content">
+                            <div class="secret-word" id="card-secret">الكلمة</div>
+                            <div class="hint-text" id="card-hint" style="display: none;">التلميح: ...</div>
+                            <div class="card-instruction" style="color: var(--accent-orange);">تم فتح الختم. مرر الهاتف بحذر.</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -263,19 +321,19 @@
         <button class="primary-btn" id="next-btn" onclick="nextPlayer()" style="display: none;">اللاعب التالي</button>
     </div>
 
+    <!-- الشاشة 3: العداد والمناقشة -->
     <div id="timer-screen" class="screen">
         <h2>وقت التصفية والمناقشة</h2>
         
-        <div class="content-wrapper" style="justify-content: center;">
+        <div class="content-wrapper" style="justify-content: center; align-items: center;">
             <div id="timer-display">05:00</div>
-            <div style="color: var(--text-dim); text-align: center; font-size: 0.9rem;">ابحثوا عن الـ Imposter قبل نهاية الوقت.</div>
+            <div style="color: var(--text-dim); text-align: center; font-size: 0.85rem;">ابحثوا عن الـ Imposter (الذئب) قبل نهاية الوقت.</div>
         </div>
         
         <button class="primary-btn" onclick="resetToSetup()">إعادة تشغيل النظام</button>
     </div>
 
     <script>
-        // قاعدة البيانات الأساسية لـ 20 كلمة
         let wordDatabase = [
             {word: "طائرة", hint: "وسيلة نقل"}, {word: "قطار", hint: "وسيلة نقل"},
             {word: "تفاحة", hint: "فاكهة"}, {word: "موز", hint: "فاكهة"},
@@ -294,7 +352,8 @@
         let currentWordPair = {};
         let currentPlayerTurn = 0;
         let countdownTimer;
-        let editingIndex = -1; // مؤشر للكلمة التي يتم تعديلها حالياً
+        let editingIndex = -1;
+        let isSealBroken = false;
 
         window.onload = function() {
             renderWords();
@@ -315,7 +374,6 @@
             list.innerHTML = players.map(p => `<div class="list-item"><span>${p}</span></div>`).join('');
         }
 
-        // رصيد إدارة البيانات (عرض الكلمات مع أزرار التعديل والحذف)
         function renderWords() {
             const list = document.getElementById('words-management-list');
             list.innerHTML = wordDatabase.map((item, index) => `
@@ -337,12 +395,13 @@
 
             if (word && hint) {
                 if (editingIndex > -1) {
-                    // وضع التحديث
                     wordDatabase[editingIndex] = { word: word, hint: hint };
                     editingIndex = -1;
-                    document.getElementById('add-word-btn').innerText = "+ إضافة";
+                    const btn = document.getElementById('add-word-btn');
+                    btn.innerText = "+ حفظ الكلمة باللائحة";
+                    btn.style.background = "var(--accent-green)";
+                    btn.style.color = "#000";
                 } else {
-                    // وضع الإضافة الجديد
                     wordDatabase.push({ word: word, hint: hint });
                 }
                 wInput.value = '';
@@ -355,12 +414,15 @@
             editingIndex = index;
             document.getElementById('word-input').value = wordDatabase[index].word;
             document.getElementById('hint-input').value = wordDatabase[index].hint;
-            document.getElementById('add-word-btn').innerText = "تحديث";
+            const btn = document.getElementById('add-word-btn');
+            btn.innerText = "تحديث الكلمة الآن";
+            btn.style.background = "var(--accent-orange)";
+            btn.style.color = "#fff";
         }
 
         function deleteWord(index) {
             if(wordDatabase.length <= 1) {
-                alert("يجب إبقاء كلمة واحدة على الأقل في النظام.");
+                alert("يجب إبقاء كلمة واحدة في النظام.");
                 return;
             }
             wordDatabase.splice(index, 1);
@@ -380,8 +442,11 @@
         }
 
         function setupPlayerTurn() {
+            isSealBroken = false;
             document.getElementById('main-card').classList.remove('flipped');
             document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('seal-container').style.display = 'flex';
+            document.getElementById('secret-container').style.display = 'none';
             
             document.getElementById('turn-title').innerText = `دور: ${players[currentPlayerTurn]}`;
             document.getElementById('card-player-name').innerText = players[currentPlayerTurn];
@@ -390,7 +455,7 @@
             const hintDisplay = document.getElementById('card-hint');
 
             if(currentPlayerTurn === imposterIndex) {
-                secretDisplay.innerText = "أنت الـ IMPOSTER";
+                secretDisplay.innerText = "أنت الـ IMPOSTER\n(الذئب)";
                 hintDisplay.innerText = `التلميح: ${currentWordPair.hint}`;
                 hintDisplay.style.display = 'block';
             } else {
@@ -401,13 +466,18 @@
         }
 
         function flipCard() {
-            const card = document.getElementById('main-card');
-            card.classList.toggle('flipped');
-            
-            if(card.classList.contains('flipped')) {
-                document.getElementById('next-btn').style.display = 'block';
+            if (!isSealBroken) {
+                document.getElementById('main-card').classList.add('flipped');
                 if(navigator.vibrate) navigator.vibrate(30);
             }
+        }
+
+        function breakSeal() {
+            isSealBroken = true;
+            document.getElementById('seal-container').style.display = 'none';
+            document.getElementById('secret-container').style.display = 'flex';
+            document.getElementById('next-btn').style.display = 'block';
+            if(navigator.vibrate) navigator.vibrate([50, 100]);
         }
 
         function nextPlayer() {
@@ -450,7 +520,7 @@
         function resetToSetup() {
             clearInterval(countdownTimer);
             showScreen('setup-screen');
-            renderWords(); // كفالة تحديث الجدول عند العودة
+            renderWords();
         }
     </script>
 </body>
